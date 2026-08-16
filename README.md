@@ -96,5 +96,5 @@
 
 ## پیوندها
 
-- مخزن گیت‌هاب: [MehranQadirian/course-planner](https://github.com/MehranQadirian/course-planner/)
-- صفحه‌ی اصلی پروژه: [index.html](https://mehranqadirian.github.io/course-planner/)
+- مخزن گیت‌هاب: [MehranQadirian/academic-tools](https://github.com/MehranQadirian/academic-tools/)
+- صفحه‌ی اصلی پروژه: [index.html](https://mehranqadirian.github.io/academic-tools/)
