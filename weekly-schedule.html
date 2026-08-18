@@ -1,0 +1,2297 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="paper">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>برنامه هفتگی دانشجویی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root {
+  --font-display: 'Lalezar', 'Vazirmatn', sans-serif;
+  --font-body: 'Vazirmatn', -apple-system, 'Segoe UI', sans-serif;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --row-h: 68px;
+  --ease: cubic-bezier(.22, .9, .34, 1.1);
+  --success: #3D7A38;
+  --success-on-dark: #69DB7C;
+}
+
+:root[data-theme="paper"] {
+  --bg: #F5EFDD;
+  --bg-dot: #DCCFA8;
+  --surface: #FFFDF7;
+  --surface-alt: #FBF4E2;
+  --ink: #2A241C;
+  --ink-soft: #5B5142;
+  --ink-faint: #8A7F6A;
+  --line: rgba(42, 36, 28, 0.55);
+  --line-faint: rgba(42, 36, 28, 0.18);
+  --accent: #C1442D;
+  --accent-soft: rgba(193, 68, 45, 0.14);
+  --shadow: 0 2px 0 rgba(42, 36, 28, 0.05), 0 10px 24px rgba(42, 36, 28, 0.10);
+  --hue-yellow-fill: #F6D976; --hue-yellow-line: #B8901A;
+  --hue-pink-fill: #F4A6B7; --hue-pink-line: #B84E68;
+  --hue-blue-fill: #9BC7EE; --hue-blue-line: #2E6DA4;
+  --hue-green-fill: #A9D9A0; --hue-green-line: #3D7A38;
+  --hue-orange-fill: #F4B678; --hue-orange-line: #B86A1F;
+  --hue-purple-fill: #C6B3EC; --hue-purple-line: #6C4CA8;
+  --status-ok: var(--success);
+  --course-blend: multiply;
+  color-scheme: light;
+}
+
+:root[data-theme="chalkboard"] {
+  --bg: #20302A;
+  --bg-dot: rgba(245, 241, 232, 0.05);
+  --surface: #28392F;
+  --surface-alt: #233229;
+  --ink: #F3EFE3;
+  --ink-soft: #C4CDC2;
+  --ink-faint: #8FA095;
+  --line: rgba(243, 239, 227, 0.5);
+  --line-faint: rgba(243, 239, 227, 0.16);
+  --accent: #FFB454;
+  --accent-soft: rgba(255, 180, 84, 0.16);
+  --shadow: 0 2px 0 rgba(0, 0, 0, 0.25), 0 12px 28px rgba(0, 0, 0, 0.4);
+  --hue-yellow-fill: rgba(255, 212, 80, 0.16); --hue-yellow-line: #FFD450;
+  --hue-pink-fill: rgba(255, 143, 168, 0.16); --hue-pink-line: #FF8FA8;
+  --hue-blue-fill: rgba(116, 192, 252, 0.16); --hue-blue-line: #74C0FC;
+  --hue-green-fill: rgba(105, 219, 124, 0.16); --hue-green-line: #69DB7C;
+  --hue-orange-fill: rgba(255, 169, 77, 0.16); --hue-orange-line: #FFA94D;
+  --hue-purple-fill: rgba(177, 151, 252, 0.16); --hue-purple-line: #B197FC;
+  --status-ok: var(--success-on-dark);
+  --course-blend: normal;
+  color-scheme: dark;
+}
+
+:root[data-theme="notebook"] {
+  --bg: #E8F0F7;
+  --bg-dot: #B8C9D9;
+  --surface: #F7FBFF;
+  --surface-alt: #EAF2FA;
+  --ink: #1A2A3A;
+  --ink-soft: #3D5A73;
+  --ink-faint: #6B879E;
+  --line: rgba(26, 42, 58, 0.5);
+  --line-faint: rgba(26, 42, 58, 0.16);
+  --accent: #2B6CB0;
+  --accent-soft: rgba(43, 108, 176, 0.14);
+  --shadow: 0 2px 0 rgba(26, 42, 58, 0.04), 0 10px 22px rgba(26, 42, 58, 0.09);
+  --hue-yellow-fill: #F7E08A; --hue-yellow-line: #B8941E;
+  --hue-pink-fill: #F5B0C0; --hue-pink-line: #B85A72;
+  --hue-blue-fill: #A8C9EE; --hue-blue-line: #2A6BA8;
+  --hue-green-fill: #B0D9A8; --hue-green-line: #3A7A3A;
+  --hue-orange-fill: #F5C08A; --hue-orange-line: #B87A2A;
+  --hue-purple-fill: #C8B8EC; --hue-purple-line: #6A4CA8;
+  --status-ok: var(--success);
+  --course-blend: multiply;
+  color-scheme: light;
+}
+
+:root[data-theme="parchment"] {
+  --bg: #EDE0C4;
+  --bg-dot: #D4C09A;
+  --surface: #F8F0DC;
+  --surface-alt: #F0E4C8;
+  --ink: #3A2E1C;
+  --ink-soft: #6B5A3E;
+  --ink-faint: #9A8868;
+  --line: rgba(58, 46, 28, 0.55);
+  --line-faint: rgba(58, 46, 28, 0.18);
+  --accent: #A05A2C;
+  --accent-soft: rgba(160, 90, 44, 0.14);
+  --shadow: 0 2px 0 rgba(58, 46, 28, 0.05), 0 10px 24px rgba(58, 46, 28, 0.10);
+  --hue-yellow-fill: #F0D070; --hue-yellow-line: #A88218;
+  --hue-pink-fill: #E8A0A8; --hue-pink-line: #A84A5A;
+  --hue-blue-fill: #98B8D8; --hue-blue-line: #2A5A88;
+  --hue-green-fill: #A0C898; --hue-green-line: #3A6A32;
+  --hue-orange-fill: #E8B070; --hue-orange-line: #A86A22;
+  --hue-purple-fill: #B8A8D8; --hue-purple-line: #5A3A88;
+  --status-ok: var(--success);
+  --course-blend: multiply;
+  color-scheme: light;
+}
+
+:root[data-theme="ink"] {
+  --bg: #1A2230;
+  --bg-dot: rgba(220, 210, 190, 0.06);
+  --surface: #232C3C;
+  --surface-alt: #1E2736;
+  --ink: #EDE6D8;
+  --ink-soft: #B8B0A0;
+  --ink-faint: #7A7468;
+  --line: rgba(237, 230, 216, 0.45);
+  --line-faint: rgba(237, 230, 216, 0.14);
+  --accent: #E8A84A;
+  --accent-soft: rgba(232, 168, 74, 0.16);
+  --shadow: 0 2px 0 rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.45);
+  --hue-yellow-fill: rgba(255, 210, 90, 0.18); --hue-yellow-line: #FFD45A;
+  --hue-pink-fill: rgba(255, 140, 160, 0.16); --hue-pink-line: #FF8CA0;
+  --hue-blue-fill: rgba(120, 180, 240, 0.16); --hue-blue-line: #78B4F0;
+  --hue-green-fill: rgba(110, 210, 130, 0.16); --hue-green-line: #6ED282;
+  --hue-orange-fill: rgba(255, 170, 80, 0.16); --hue-orange-line: #FFAA50;
+  --hue-purple-fill: rgba(180, 150, 250, 0.16); --hue-purple-line: #B496FA;
+  --status-ok: var(--success-on-dark);
+  --course-blend: normal;
+  color-scheme: dark;
+}
+
+:root[data-theme="kraft"] {
+  --bg: #C4A574;
+  --bg-dot: #A88B5A;
+  --surface: #D8BC8E;
+  --surface-alt: #CDB07E;
+  --ink: #2C2114;
+  --ink-soft: #5A4630;
+  --ink-faint: #8A7050;
+  --line: rgba(44, 33, 20, 0.55);
+  --line-faint: rgba(44, 33, 20, 0.2);
+  --accent: #8B3A1A;
+  --accent-soft: rgba(139, 58, 26, 0.16);
+  --shadow: 0 2px 0 rgba(44, 33, 20, 0.08), 0 10px 22px rgba(44, 33, 20, 0.14);
+  --hue-yellow-fill: #E8C860; --hue-yellow-line: #A08018;
+  --hue-pink-fill: #D898A0; --hue-pink-line: #984050;
+  --hue-blue-fill: #90B0C8; --hue-blue-line: #2A5080;
+  --hue-green-fill: #98B890; --hue-green-line: #3A6030;
+  --hue-orange-fill: #D8A060; --hue-orange-line: #985820;
+  --hue-purple-fill: #B0A0C8; --hue-purple-line: #504080;
+  --status-ok: var(--success);
+  --course-blend: multiply;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background:
+    radial-gradient(var(--bg-dot) 1px, transparent 1.3px) 0 0 / 22px 22px,
+    var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 22px 16px 60px;
+  transition: background-color .3s var(--ease), color .3s var(--ease);
+}
+.page { max-width: 1180px; margin: 0 auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.topbar__title {
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+.topbar__sub {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.iconbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1.5px solid var(--line-faint);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 9px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform .12s var(--ease), border-color .15s ease, color .15s ease;
+}
+.iconbtn:hover { border-color: var(--line); transform: translateY(-1px); }
+.iconbtn:active { transform: translateY(0) scale(.97); }
+.iconbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.iconbtn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.iconbtn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.iconbtn[aria-busy="true"] { opacity: .65; cursor: wait; }
+.iconbtn__spinner {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--line-faint);
+  border-top-color: var(--accent);
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-faint);
+  padding: 8px 11px;
+  border-radius: 999px;
+  border: 1.5px dashed var(--line-faint);
+  cursor: pointer;
+  background: transparent;
+  font-family: var(--font-body);
+}
+.status-chip svg { width: 13px; height: 13px; }
+.status-chip[data-state="linked"] {
+  color: var(--status-ok);
+  border-color: var(--status-ok);
+  border-style: solid;
+}
+.status-chip[data-state="needs-permission"] {
+  color: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+}
+
+.download-wrap { position: relative; }
+.download-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  inset-inline-start: 0;
+  min-width: 198px;
+  background: var(--surface);
+  border: 1.5px solid var(--line-faint);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  padding: 6px;
+  z-index: 50;
+  opacity: 0;
+  transform: translateY(-4px) scale(.98);
+  pointer-events: none;
+  transition: opacity .15s var(--ease), transform .15s var(--ease);
+}
+.download-menu--open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.download-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 9px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-align: right;
+  transition: background .12s ease;
+}
+.download-menu__item:hover,
+.download-menu__item:focus-visible {
+  background: var(--surface-alt);
+  outline: none;
+}
+.download-menu__item svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.download-menu__hint {
+  padding: 8px 10px 4px;
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  border-top: 1px dashed var(--line-faint);
+  margin-top: 4px;
+  line-height: 1.6;
+}
+
+#exportRoot {
+  position: fixed;
+  top: 0;
+  inset-inline-start: -10000px;
+  width: 1240px;
+  padding: 28px;
+  box-sizing: border-box;
+  pointer-events: none;
+  background:
+    radial-gradient(var(--bg-dot) 1px, transparent 1.3px) 0 0 / 22px 22px,
+    var(--bg);
+}
+#exportRoot .schedule__scroll { overflow: visible; }
+#exportRoot .schedule__grid { min-width: auto; }
+#exportRoot .course {
+  filter: none;
+  mix-blend-mode: normal;
+  cursor: default;
+  transform: none !important;
+  box-shadow: none !important;
+}
+#exportRoot .course:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+#exportRoot .course::before,
+#exportRoot .course::after {
+  display: none;
+}
+
+.glance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (max-width: 560px) {
+  .glance { grid-template-columns: 1fr; }
+}
+
+.glance-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--line-faint);
+  box-shadow: var(--shadow);
+  padding: 14px 16px 12px;
+  position: relative;
+}
+.glance-card--today { border-color: var(--accent); }
+.glance-card__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.glance-card__badge {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.glance-card--tomorrow .glance-card__badge {
+  background: transparent;
+  border: 1.5px dashed var(--ink-faint);
+}
+.glance-card__title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  margin: 0;
+}
+.glance-card__daylabel {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  margin-inline-start: auto;
+  font-weight: 600;
+}
+
+.glance-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.glance-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  width: 100%;
+  text-align: right;
+  font-family: var(--font-body);
+}
+.glance-item:hover,
+.glance-item:focus-visible {
+  background: var(--surface-alt);
+  border-color: var(--line-faint);
+  outline: none;
+}
+.glance-item__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.glance-item__name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.glance-item__time {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  margin-inline-start: auto;
+  font-variant-numeric: tabular-nums;
+}
+.glance-empty {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 2px;
+}
+.glance-empty svg {
+  width: 15px;
+  height: 15px;
+  color: var(--status-ok);
+  flex-shrink: 0;
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  background: var(--accent-soft);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 10px 13px;
+  margin-bottom: 16px;
+  font-size: 12.5px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+.notice svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--accent);
+}
+.notice__close {
+  margin-inline-start: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-faint);
+  padding: 2px;
+  flex-shrink: 0;
+}
+.notice__close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.notice[hidden] { display: none; }
+
+.schedule {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--line-faint);
+  box-shadow: var(--shadow);
+  padding: 6px;
+}
+.schedule__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.schedule__scroll::-webkit-scrollbar { height: 8px; }
+.schedule__scroll::-webkit-scrollbar-thumb {
+  background: var(--line-faint);
+  border-radius: 8px;
+}
+
+.schedule__grid {
+  display: grid;
+  grid-template-columns: 60px repeat(var(--day-count, 7), minmax(140px, 1fr));
+  grid-auto-rows: var(--row-h);
+  min-width: 960px;
+  position: relative;
+}
+
+.schedule__corner {
+  grid-row: 1;
+  grid-column: 1;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 3;
+}
+.schedule__day-header {
+  grid-row: 1;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 66px;
+  border-bottom: 2px solid var(--line-faint);
+}
+.schedule__day-header__name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--ink);
+}
+.schedule__day-header__pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+.schedule__day-header--today { background: var(--accent-soft); }
+.schedule__day-header--tomorrow .schedule__day-header__pill {
+  border-style: dashed;
+  color: var(--ink-faint);
+  border-color: var(--ink-faint);
+}
+
+.schedule__time {
+  grid-column: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-faint);
+  border-top: 1px dashed var(--line-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule__cell {
+  border-top: 1px dashed var(--line-faint);
+  border-inline-end: 1px dashed var(--line-faint);
+}
+.schedule__cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  background: var(--accent-soft);
+}
+.schedule__col--today { background: var(--accent-soft); }
+
+.schedule__day { position: relative; }
+
+.course {
+  position: absolute;
+  inset-inline-start: 3px;
+  border: none;
+  background: var(--fill);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-align: right;
+  padding: 9px 11px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: transform .15s var(--ease), filter .15s ease, box-shadow .15s ease;
+  transform-origin: center;
+  --tilt: 0deg;
+  --radius: 12px 15px 10px 14px / 13px 10px 15px 11px;
+  --ink-wobble: 0.7px;
+  border-radius: var(--radius);
+  transform: rotate(var(--tilt));
+  filter: url(#sketchy);
+  mix-blend-mode: var(--course-blend);
+  z-index: 2;
+  overflow: visible;
+  isolation: isolate;
+  box-shadow:
+    0 0 0 1.6px var(--line),
+    var(--ink-wobble) calc(var(--ink-wobble) * 1.1) 0 0 var(--line),
+    calc(var(--ink-wobble) * -0.8) calc(var(--ink-wobble) * 0.5) 0 0 var(--line),
+    0 1px 0 rgba(0, 0, 0, 0.04);
+}
+.course::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1.7px solid var(--line);
+  opacity: 0.42;
+  pointer-events: none;
+  transform: rotate(0.55deg) translate(0.55px, -0.35px);
+  z-index: -1;
+}
+.course::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: inherit;
+  border: 1.1px solid var(--line);
+  opacity: 0.18;
+  pointer-events: none;
+  transform: rotate(-0.45deg) translate(-0.4px, 0.5px);
+  z-index: 0;
+}
+.course:hover,
+.course:focus-visible {
+  transform: rotate(0deg) translateY(-2px) scale(1.018);
+  z-index: 6;
+  outline: none;
+  filter: url(#sketchy-hover);
+  box-shadow:
+    0 0 0 1.7px var(--line),
+    0.8px 1px 0 0 var(--line),
+    -0.6px 0.5px 0 0 var(--line),
+    0 6px 16px rgba(0, 0, 0, 0.12);
+}
+.course:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+.course__name {
+  font-weight: 800;
+  font-size: 12.5px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  position: relative;
+  z-index: 1;
+}
+.course__meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  opacity: .9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  z-index: 1;
+}
+.course__meta svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+.course__exam-flag {
+  position: absolute;
+  top: 5px;
+  inset-inline-end: 5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50% 45% 55% 50% / 50% 55% 45% 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  filter: none;
+  box-shadow: 0.4px 0.5px 0 0 var(--accent);
+}
+.course__exam-flag svg {
+  width: 10px;
+  height: 10px;
+}
+
+.course--shape-0 {
+  --radius: 9px 16px 8px 15px / 14px 7px 16px 10px;
+  --tilt: -0.7deg;
+  --ink-wobble: 0.85px;
+}
+.course--shape-1 {
+  --radius: 14px 8px 15px 9px / 8px 15px 7px 14px;
+  --tilt: 0.6deg;
+  --ink-wobble: 0.55px;
+}
+.course--shape-2 {
+  --radius: 11px 15px 7px 13px / 15px 9px 13px 8px;
+  --tilt: -0.4deg;
+  --ink-wobble: 0.75px;
+}
+.course--shape-3 {
+  --radius: 15px 9px 14px 8px / 9px 14px 10px 15px;
+  --tilt: 0.85deg;
+  --ink-wobble: 0.65px;
+}
+.course--shape-4 {
+  --radius: 8px 14px 12px 16px / 13px 8px 15px 9px;
+  --tilt: -0.55deg;
+  --ink-wobble: 0.9px;
+}
+.course--shape-5 {
+  --radius: 13px 12px 9px 14px / 10px 15px 8px 13px;
+  --tilt: 0.45deg;
+  --ink-wobble: 0.5px;
+}
+.course--shape-6 {
+  --radius: 16px 7px 13px 10px / 8px 13px 15px 9px;
+  --tilt: -0.75deg;
+  --ink-wobble: 0.8px;
+}
+.course--shape-7 {
+  --radius: 10px 15px 14px 8px / 14px 9px 11px 15px;
+  --tilt: 0.65deg;
+  --ink-wobble: 0.7px;
+}
+
+.popover {
+  position: fixed;
+  z-index: 80;
+  max-width: 240px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.75;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
+}
+.popover--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.popover__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.popover__row svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+.popover__row + .popover__row { margin-top: 3px; }
+
+.legend {
+  margin-top: 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--line-faint);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+}
+.legend__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+.legend__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px 16px;
+}
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.legend__swatch {
+  width: 15px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1.5px solid var(--sw-line);
+  background: var(--sw-fill);
+  flex-shrink: 0;
+}
+:root[data-theme="paper"] .legend__swatch,
+:root[data-theme="notebook"] .legend__swatch,
+:root[data-theme="parchment"] .legend__swatch,
+:root[data-theme="kraft"] .legend__swatch {
+  mix-blend-mode: multiply;
+}
+.legend__label { font-weight: 700; color: var(--ink); }
+.legend__prof { color: var(--ink-faint); }
+.legend__note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line-faint);
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.legend__note svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.toast-stack {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(360px, 92vw);
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12.5px;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  animation: toast-in .2s var(--ease);
+}
+.toast svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+.toast--error { background: #B3261E; color: #fff; }
+.toast--success { background: var(--success); color: #fff; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes course-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 var(--accent),
+      0 0 0 1.6px var(--line),
+      0.7px 0.8px 0 0 var(--line),
+      -0.5px 0.4px 0 0 var(--line);
+  }
+  50% {
+    box-shadow:
+      0 0 0 7px transparent,
+      0 0 0 1.6px var(--line),
+      0.7px 0.8px 0 0 var(--line),
+      -0.5px 0.4px 0 0 var(--line);
+  }
+}
+.course--pulse { animation: course-pulse 1s var(--ease) 2; }
+
+.empty-state {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--ink-faint);
+  font-size: 13px;
+  grid-column: 1 / -1;
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="sketchy" x="-10%" y="-14%" width="120%" height="128%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.045 0.12" numOctaves="3" seed="17" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="sketchy-hover" x="-10%" y="-14%" width="120%" height="128%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.038 0.1" numOctaves="2" seed="17" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="page">
+  <header class="topbar">
+    <div>
+      <h1 class="topbar__title">برنامه هفتگی</h1>
+      <p class="topbar__sub" id="dateLine">—</p>
+    </div>
+    <div class="topbar__actions">
+      <button class="status-chip" id="fileStatusChip" type="button" data-state="not-linked">
+        <span id="fileStatusIcon"></span>
+        <span id="fileStatusText">اتصال به setting.json</span>
+      </button>
+      <button class="iconbtn" id="themeToggle" type="button" aria-pressed="false" title="تغییر تم">
+        <span id="themeIcon"></span>
+        <span id="themeLabel">تم دفترچه</span>
+      </button>
+      <div class="download-wrap">
+        <button class="iconbtn" id="downloadBtn" type="button" aria-haspopup="true" aria-expanded="false">
+          <span id="downloadIcon"></span>
+          <span>دانلود برنامه</span>
+        </button>
+        <div class="download-menu" id="downloadMenu" hidden>
+          <button class="download-menu__item" id="downloadPngBtn" type="button"></button>
+          <button class="download-menu__item" id="downloadPdfBtn" type="button"></button>
+          <p class="download-menu__hint">دقیقاً با طراحی همین صفحه، بدون بخش «امروز/فردا»</p>
+        </div>
+      </div>
+      <button class="iconbtn" id="importBtn" type="button"></button>
+      <input type="file" id="importInput" accept="application/json" class="sr-only" tabindex="-1">
+    </div>
+  </header>
+
+  <div class="notice" id="notice" hidden>
+    <span id="noticeIcon"></span>
+    <span id="noticeText"></span>
+    <button class="notice__close" id="noticeClose" type="button" aria-label="بستن پیام"></button>
+  </div>
+
+  <section class="glance" aria-label="نمای امروز و فردا">
+    <div class="glance-card glance-card--today">
+      <div class="glance-card__head">
+        <span class="glance-card__badge" aria-hidden="true"></span>
+        <h2 class="glance-card__title">امروز</h2>
+        <span class="glance-card__daylabel" id="todayDayLabel"></span>
+      </div>
+      <ul class="glance-list" id="todayList"></ul>
+    </div>
+    <div class="glance-card glance-card--tomorrow">
+      <div class="glance-card__head">
+        <span class="glance-card__badge" aria-hidden="true"></span>
+        <h2 class="glance-card__title">فردا</h2>
+        <span class="glance-card__daylabel" id="tomorrowDayLabel"></span>
+      </div>
+      <ul class="glance-list" id="tomorrowList"></ul>
+    </div>
+  </section>
+
+  <section class="schedule" aria-label="جدول برنامه هفتگی درسی">
+    <div class="schedule__scroll">
+      <div class="schedule__grid" role="grid" aria-label="برنامه کلاس‌های هفته" id="scheduleGrid"></div>
+    </div>
+  </section>
+
+  <section class="legend" aria-label="راهنمای رنگ‌ها">
+    <h3 class="legend__title">راهنما</h3>
+    <div class="legend__grid" id="legendGrid"></div>
+    <div class="legend__note">
+      <span id="legendNoteIcon"></span>
+      <span>برای دیدن کد درس، تاریخ و ساعت امتحان، نشانگر ماوس را روی کارت درس نگه دارید یا آن را لمس کنید.</span>
+    </div>
+  </section>
+</div>
+
+<div class="popover" id="popover" role="tooltip"></div>
+<div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var ICON = {
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.25"/><path d="M12 7.5v5.1l3.2 1.9"/></svg>',
+    user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5.2 19.2c1.5-3.5 3.8-5.1 6.8-5.1s5.3 1.6 6.8 5.1"/></svg>',
+    calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.25"/><path d="M8 3.25v3.5M16 3.25v3.5M3.5 10h17"/></svg>',
+    hash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 4.5 7 19.5M17 4.5l-2.2 15M4.5 9h15M4 15h15"/></svg>',
+    sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.1"/><path d="M12 3v2.2M12 18.8V21M4.2 4.2l1.55 1.55M18.25 18.25l1.55 1.55M3 12h2.2M18.8 12H21M4.2 19.8l1.55-1.55M18.25 5.75l1.55-1.55"/></svg>',
+    moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.1A8.25 8.25 0 1 1 9.9 3.8a6.4 6.4 0 0 0 10.3 10.3Z"/></svg>',
+    palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.25C7.05 3.25 3.25 7.05 3.25 12S7.05 20.75 12 20.75c.85 0 1.2-.55 1.2-1.2 0-.3-.1-.65-.28-.95-.18-.35-.27-.7-.27-1.1 0-1 .85-1.85 1.85-1.85h2.2c3.05 0 5.5-2.45 5.5-5.5C22.2 6.7 17.7 3.25 12 3.25Z"/><circle cx="7.6" cy="11.2" r="1.15" fill="currentColor" stroke="none"/><circle cx="10.4" cy="7.9" r="1.15" fill="currentColor" stroke="none"/><circle cx="14.5" cy="7.6" r="1.15" fill="currentColor" stroke="none"/><circle cx="17.3" cy="10.5" r="1.15" fill="currentColor" stroke="none"/></svg>',
+    upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.25V4.5M7.5 8.75 12 4.25l4.5 4.5"/><path d="M4.75 15.5v2.9c0 .95.8 1.75 1.75 1.75h11c.95 0 1.75-.8 1.75-1.75v-2.9"/></svg>',
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 14.4 14.4 9.6"/><path d="M11.1 6.5 12.7 4.9a3.4 3.4 0 0 1 4.8 4.8l-1.5 1.5M12.9 17.5l-1.6 1.6a3.4 3.4 0 0 1-4.8-4.8l1.5-1.5"/></svg>',
+    linkOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.1 6.5 12.7 4.9a3.4 3.4 0 0 1 4.8 4.8l-1.5 1.5M12.9 17.5l-1.6 1.6a3.4 3.4 0 0 1-4.8-4.8l1.5-1.5" opacity="0.4"/><path d="M4.5 4.5l15 15"/></svg>',
+    warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2 20.5 18.5H3.5L12 4.2Z"/><path d="M12 10v3.8M12 16.6v.2"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.25"/><path d="M8.4 12.2l2.4 2.4 4.7-4.8"/></svg>',
+    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
+    info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.25"/><path d="M12 11.2v5M12 7.7v.25"/></svg>',
+    download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.75 12 15.25l4.5-4.5"/><path d="M4.75 16.5v2.5c0 .95.8 1.75 1.75 1.75h11c.95 0 1.75-.8 1.75-1.75v-2.5"/></svg>',
+    image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.25"/><path d="M3.5 15.4l4.3-4.3a1.3 1.3 0 0 1 1.85 0l2.1 2.1"/><path d="M12.6 13.5l1.5-1.5a1.3 1.3 0 0 1 1.85 0l3.05 3.05"/><circle cx="8.4" cy="8.8" r="1.3"/></svg>',
+    filePdf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.25 3.5h7.1L18 8.15V19.5a1 1 0 0 1-1 1H6.25a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1Z"/><path d="M13.35 3.5v4.65H18"/><path d="M8.2 16.9v-4h1a1.35 1.35 0 0 1 0 2.7H8.2M11.7 16.9v-4h.95a1.55 1.55 0 0 1 0 3.1h-.95v.9M15.5 12.9h1.65M15.5 14.9h1.35"/></svg>'
+  };
+
+  var DAYS = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
+  var HUES = ["yellow", "pink", "blue", "green", "orange", "purple"];
+  var ROW_H = 68;
+  var STORAGE_COURSES = "scheduleWidget:courses";
+  var STORAGE_THEME = "scheduleWidget:theme";
+  var THEMES = [
+    { id: "paper", label: "تم دفترچه", icon: "sun" },
+    { id: "chalkboard", label: "تم تخته‌سیاه", icon: "moon" },
+    { id: "notebook", label: "تم دفتر مشق", icon: "palette" },
+    { id: "parchment", label: "تم پوستی", icon: "palette" },
+    { id: "ink", label: "تم مرکب", icon: "moon" },
+    { id: "kraft", label: "تم کرافت", icon: "palette" }
+  ];
+  var SHAPE_COUNT = 8;
+
+  var DEMO_COURSES = [
+    { id: 1, courseCode: "7841022310", offeringCode: "4210", courseName: "پروژه پایانی", professor: "دکتر رضایی", timeSlots: [], examDate: "", examTime: "", examDuration: null },
+    { id: 2, courseCode: "7841033185", offeringCode: "4215", courseName: "کارآموزی", professor: "دکتر رضایی", timeSlots: [], examDate: "", examTime: "", examDuration: null },
+    { id: 3, courseCode: "5512090", offeringCode: "1102", courseName: "تربیت بدنی ۲", professor: "استاد کریمی", timeSlots: [{ day: "شنبه", start: "08:00", end: "10:00" }], examDate: "", examTime: "", examDuration: null },
+    { id: 4, courseCode: "7841041256", offeringCode: "4231", courseName: "مهندسی نرم‌افزار", professor: "دکتر احمدی", timeSlots: [{ day: "یکشنبه", start: "10:00", end: "12:00" }, { day: "سه‌شنبه", start: "10:00", end: "12:00" }], examDate: "2027-01-05", examTime: "10:00", examDuration: 2 },
+    { id: 5, courseCode: "7841052734", offeringCode: "4244", courseName: "پایگاه داده‌ها", professor: "دکتر موسوی", timeSlots: [{ day: "دوشنبه", start: "08:00", end: "10:00" }, { day: "چهارشنبه", start: "08:00", end: "10:00" }], examDate: "2027-01-11", examTime: "08:00", examDuration: 2 },
+    { id: 6, courseCode: "7841063819", offeringCode: "4258", courseName: "شبکه‌های کامپیوتری", professor: "مهندس صادقی", timeSlots: [{ day: "یکشنبه", start: "14:00", end: "16:00" }], examDate: "2027-01-13", examTime: "14:00", examDuration: 2 },
+    { id: 7, courseCode: "7841074502", offeringCode: "4266", courseName: "هوش مصنوعی", professor: "دکتر جعفری", timeSlots: [{ day: "دوشنبه", start: "14:00", end: "16:00" }, { day: "چهارشنبه", start: "14:00", end: "15:00" }], examDate: "2027-01-09", examTime: "16:00", examDuration: 2 },
+    { id: 8, courseCode: "7841085177", offeringCode: "4271", courseName: "معماری کامپیوتر", professor: "مهندس نوری", timeSlots: [{ day: "سه‌شنبه", start: "08:00", end: "10:00" }], examDate: "2027-01-06", examTime: "10:00", examDuration: 2 },
+    { id: 9, courseCode: "7841096043", offeringCode: "4288", courseName: "زبان تخصصی", professor: "استاد قاسمی", timeSlots: [{ day: "پنجشنبه", start: "10:00", end: "12:00" }], examDate: "", examTime: "", examDuration: null },
+    { id: 10, courseCode: "7841107925", offeringCode: "4293", courseName: "کارگاه برنامه‌نویسی وب", professor: "مهندس صادقی", timeSlots: [{ day: "چهارشنبه", start: "16:00", end: "18:00" }], examDate: "", examTime: "", examDuration: null }
+  ];
+
+  var isDemoData = true;
+  var courses = [];
+  var unscheduledCount = 0;
+  var navMatrix = [];
+  var navState = { row: 0, col: 0 };
+  var keyboardNavBound = false;
+  var popTimer = null;
+  var popOpenFor = null;
+  var exportRoot = null;
+  var exportGridEl = null;
+  var exportLegendEl = null;
+  var exportDateEl = null;
+  var settingsHandle = null;
+  var currentTheme = "paper";
+  var FS_SUPPORTED = typeof window.showSaveFilePicker === "function";
+  var IDB_SUPPORTED = typeof indexedDB !== "undefined";
+
+  document.documentElement.style.setProperty("--day-count", DAYS.length);
+
+  function timeToHour(t) {
+    if (typeof t !== "string" || !/^\d{1,2}:\d{2}$/.test(t)) return null;
+    var p = t.split(":");
+    var h = parseInt(p[0], 10);
+    var m = parseInt(p[1], 10);
+    if (h < 0 || h > 23 || m < 0 || m > 59) return null;
+    return h + m / 60;
+  }
+
+  function normalizeCourses(rawList) {
+    var scheduled = [];
+    var skippedNames = [];
+
+    rawList.forEach(function (raw) {
+      if (!raw || typeof raw !== "object") return;
+      var name = String(raw.courseName || "درس بدون‌نام");
+      var validSlots = [];
+      if (Array.isArray(raw.timeSlots)) {
+        raw.timeSlots.forEach(function (slot) {
+          if (!slot || DAYS.indexOf(slot.day) === -1) return;
+          var s = timeToHour(slot.start);
+          var e = timeToHour(slot.end);
+          if (s === null || e === null || e <= s) return;
+          validSlots.push({ day: slot.day, start: slot.start, end: slot.end });
+        });
+      }
+      if (validSlots.length === 0) {
+        skippedNames.push(name);
+        return;
+      }
+      scheduled.push({
+        id: raw.id,
+        courseCode: String(raw.courseCode || ""),
+        offeringCode: String(raw.offeringCode || ""),
+        courseName: name,
+        professor: String(raw.professor || "—"),
+        timeSlots: validSlots,
+        examDate: raw.examDate || "",
+        examTime: raw.examTime || "",
+        examDuration: raw.examDuration || null
+      });
+    });
+
+    return { scheduled: scheduled, skippedNames: skippedNames };
+  }
+
+  var hueMap = {};
+  var hueOrder = [];
+
+  function rebuildHueMap(list) {
+    hueMap = {};
+    hueOrder = [];
+    list.forEach(function (course) {
+      var code = String(course.courseCode || course.courseName || "");
+      if (!code || hueMap[code] !== undefined) return;
+      hueMap[code] = HUES[hueOrder.length % HUES.length];
+      hueOrder.push(code);
+    });
+  }
+
+  function hueFor(courseCode) {
+    var code = String(courseCode || "");
+    if (hueMap[code] !== undefined) return hueMap[code];
+    var assigned = HUES[hueOrder.length % HUES.length];
+    hueMap[code] = assigned;
+    hueOrder.push(code);
+    return assigned;
+  }
+
+  function shapeIndex(courseCode, slotKey) {
+    var str = String(courseCode || "") + String(slotKey || "");
+    var sum = 0;
+    for (var i = 0; i < str.length; i++) sum += str.charCodeAt(i) * (i + 3);
+    return sum % SHAPE_COUNT;
+  }
+
+  function loadInitialData() {
+    try {
+      var saved = localStorage.getItem(STORAGE_COURSES);
+      if (saved) {
+        var parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length) {
+          isDemoData = false;
+          return parsed;
+        }
+      }
+    } catch (e) {}
+    isDemoData = true;
+    return DEMO_COURSES;
+  }
+
+  function applyCourseList(rawList, opts) {
+    opts = opts || {};
+    var result = normalizeCourses(rawList);
+    courses = result.scheduled;
+    unscheduledCount = result.skippedNames.length;
+    rebuildHueMap(courses);
+
+    if (opts.persist) {
+      try {
+        localStorage.setItem(STORAGE_COURSES, JSON.stringify(rawList));
+      } catch (e) {}
+    }
+
+    if (isDemoData && !opts.persist) {
+      var demoMsg = "این یک برنامه نمایشی است. برای دیدن برنامه واقعی خودتان، فایل classes.json خروجی «سیستم انتخاب واحد» را با دکمه «وارد کردن» بارگذاری کنید.";
+      if (unscheduledCount) {
+        demoMsg += " (" + unscheduledCount + " درس نمایشی بدون زمان کلاس — «" + result.skippedNames.join("، ") + "» — نمایش داده نشد.)";
+      }
+      showNotice(ICON.info, demoMsg);
+    } else if (opts.persist) {
+      var msg = courses.length + " درس با زمان مشخص در برنامه نمایش داده شد.";
+      if (unscheduledCount) {
+        msg += " " + unscheduledCount + " درس بدون زمان کلاس (" + result.skippedNames.join("، ") + ") نادیده گرفته شد.";
+      }
+      showToast(ICON.check, msg, "success");
+      hideNotice();
+    }
+
+    renderAll();
+  }
+
+  function buildBlocksByDay(list) {
+    var byDay = {};
+    DAYS.forEach(function (d) { byDay[d] = []; });
+    list.forEach(function (course) {
+      course.timeSlots.forEach(function (slot) {
+        byDay[slot.day].push({
+          course: course,
+          slot: slot,
+          start: timeToHour(slot.start),
+          end: timeToHour(slot.end)
+        });
+      });
+    });
+    return byDay;
+  }
+
+  function assignLanes(blocks) {
+    blocks.sort(function (a, b) {
+      return a.start - b.start || a.end - b.end;
+    });
+    var clusters = [];
+    var current = [];
+    var clusterEnd = -Infinity;
+
+    blocks.forEach(function (b) {
+      if (b.start >= clusterEnd) {
+        if (current.length) clusters.push(current);
+        current = [b];
+        clusterEnd = b.end;
+      } else {
+        current.push(b);
+        clusterEnd = Math.max(clusterEnd, b.end);
+      }
+    });
+    if (current.length) clusters.push(current);
+
+    clusters.forEach(function (cluster) {
+      var lanes = [];
+      cluster.forEach(function (b) {
+        var placed = false;
+        for (var i = 0; i < lanes.length; i++) {
+          if (lanes[i].end <= b.start) {
+            lanes[i] = b;
+            b.lane = i;
+            placed = true;
+            break;
+          }
+        }
+        if (!placed) {
+          lanes.push(b);
+          b.lane = lanes.length - 1;
+        }
+      });
+      cluster.forEach(function (b) {
+        b.laneCount = lanes.length;
+      });
+    });
+    return blocks;
+  }
+
+  function computeHourRange(list) {
+    var min = 24;
+    var max = 0;
+    list.forEach(function (c) {
+      c.timeSlots.forEach(function (s) {
+        var sh = timeToHour(s.start);
+        var eh = timeToHour(s.end);
+        if (sh < min) min = sh;
+        if (eh > max) max = eh;
+      });
+    });
+    if (min === 24) {
+      min = 8;
+      max = 20;
+    }
+    return {
+      start: Math.max(6, Math.floor(min)),
+      end: Math.min(23, Math.ceil(max))
+    };
+  }
+
+  function todayIndex() {
+    return (new Date().getDay() + 1) % 7;
+  }
+
+  var grid = document.getElementById("scheduleGrid");
+  var popover = document.getElementById("popover");
+
+  function renderGrid() {
+    grid.innerHTML = "";
+    navMatrix = [];
+    var todayIdx = todayIndex();
+    var tomorrowIdx = (todayIdx + 1) % DAYS.length;
+    var range = computeHourRange(courses);
+    var totalHours = range.end - range.start;
+    var fragment = document.createDocumentFragment();
+
+    var corner = document.createElement("div");
+    corner.className = "schedule__corner";
+    corner.setAttribute("role", "columnheader");
+    corner.innerHTML = '<span class="sr-only">ساعت</span>';
+    fragment.appendChild(corner);
+
+    DAYS.forEach(function (day, i) {
+      var header = document.createElement("div");
+      var extra = i === todayIdx
+        ? " schedule__day-header--today"
+        : (i === tomorrowIdx ? " schedule__day-header--tomorrow" : "");
+      header.className = "schedule__day-header" + extra;
+      header.setAttribute("role", "columnheader");
+      header.style.gridColumn = i + 2;
+      var pill = i === todayIdx
+        ? '<span class="schedule__day-header__pill">امروز</span>'
+        : (i === tomorrowIdx ? '<span class="schedule__day-header__pill">فردا</span>' : "");
+      header.innerHTML = '<span class="schedule__day-header__name">' + day + "</span>" + pill;
+      fragment.appendChild(header);
+    });
+
+    for (var row = 0; row < totalHours; row++) {
+      navMatrix.push(new Array(DAYS.length).fill(null));
+      var hour = range.start + row;
+      var timeLabel = document.createElement("div");
+      timeLabel.className = "schedule__time";
+      timeLabel.style.gridRow = row + 2;
+      timeLabel.textContent = (hour < 10 ? "0" + hour : hour) + ":00";
+      fragment.appendChild(timeLabel);
+
+      DAYS.forEach(function (day, col) {
+        var cell = document.createElement("div");
+        cell.className = "schedule__cell" + (col === todayIdx ? " schedule__col--today" : "");
+        cell.setAttribute("role", "gridcell");
+        cell.setAttribute("tabindex", row === 0 && col === 0 ? "0" : "-1");
+        cell.setAttribute(
+          "aria-label",
+          day + "، ساعت " + (hour < 10 ? "0" + hour : hour) + ":۰۰، خالی"
+        );
+        cell.style.gridColumn = col + 2;
+        cell.style.gridRow = row + 2;
+        cell.dataset.row = row;
+        cell.dataset.col = col;
+        fragment.appendChild(cell);
+        navMatrix[row][col] = cell;
+      });
+    }
+
+    var blocksByDay = buildBlocksByDay(courses);
+
+    DAYS.forEach(function (day, col) {
+      var dayWrap = document.createElement("div");
+      dayWrap.className = "schedule__day";
+      dayWrap.style.gridColumn = col + 2;
+      dayWrap.style.gridRow = "2 / span " + totalHours;
+      dayWrap.style.height = totalHours * ROW_H + "px";
+
+      var blocks = assignLanes(blocksByDay[day]);
+      blocks.forEach(function (b) {
+        var hue = hueFor(b.course.courseCode);
+        var top = (b.start - range.start) * ROW_H;
+        var height = (b.end - b.start) * ROW_H - 5;
+        var widthPct = 100 / b.laneCount;
+        var startPct = b.lane * widthPct;
+        var shape = shapeIndex(b.course.courseCode, day + b.slot.start);
+
+        var el = document.createElement("button");
+        el.type = "button";
+        el.id = "course-" + b.course.id + "-" + day + "-" + b.slot.start;
+        el.className = "course course--shape-" + shape;
+        el.style.setProperty("--fill", "var(--hue-" + hue + "-fill)");
+        el.style.setProperty("--line", "var(--hue-" + hue + "-line)");
+        el.style.top = top + "px";
+        el.style.height = Math.max(height, 44) + "px";
+        el.style.insetInlineStart = "calc(" + startPct + "% + 3px)";
+        el.style.width = "calc(" + widthPct + "% - 6px)";
+        el.setAttribute("tabindex", "0");
+        el.setAttribute(
+          "aria-label",
+          b.course.courseName +
+            "، استاد " +
+            b.course.professor +
+            "، " +
+            day +
+            " ساعت " +
+            b.slot.start +
+            " تا " +
+            b.slot.end +
+            (b.course.examDate ? "، دارای امتحان" : "")
+        );
+        el.innerHTML =
+          '<span class="course__name">' +
+          b.course.courseName +
+          "</span>" +
+          '<span class="course__meta">' +
+          ICON.user +
+          "<span>" +
+          b.course.professor +
+          "</span></span>" +
+          '<span class="course__meta">' +
+          ICON.clock +
+          "<span>" +
+          b.slot.start +
+          "–" +
+          b.slot.end +
+          "</span></span>" +
+          (b.course.examDate
+            ? '<span class="course__exam-flag" aria-hidden="true">' + ICON.calendar + "</span>"
+            : "");
+
+        attachPopover(el, b.course);
+        dayWrap.appendChild(el);
+
+        var startRow = Math.round(b.start - range.start);
+        var endRow = Math.round(b.end - range.start);
+        for (var r = startRow; r < endRow && r < navMatrix.length; r++) {
+          if (navMatrix[r][col] && navMatrix[r][col].classList.contains("schedule__cell")) {
+            navMatrix[r][col] = el;
+          }
+        }
+      });
+
+      fragment.appendChild(dayWrap);
+    });
+
+    grid.appendChild(fragment);
+  }
+
+  function setupKeyboardNav() {
+    if (keyboardNavBound) return;
+    keyboardNavBound = true;
+    grid.addEventListener("keydown", function (e) {
+      if (!e.target.classList.contains("schedule__cell")) return;
+      var row = parseInt(e.target.dataset.row, 10);
+      var col = parseInt(e.target.dataset.col, 10);
+      var nr = row;
+      var nc = col;
+      if (e.key === "ArrowDown") nr++;
+      else if (e.key === "ArrowUp") nr--;
+      else if (e.key === "ArrowLeft") nc++;
+      else if (e.key === "ArrowRight") nc--;
+      else return;
+      e.preventDefault();
+      nr = Math.max(0, Math.min(navMatrix.length - 1, nr));
+      nc = Math.max(0, Math.min(DAYS.length - 1, nc));
+      var target = navMatrix[nr][nc];
+      if (!target) return;
+      var prev = navMatrix[navState.row] && navMatrix[navState.row][navState.col];
+      if (prev && prev.classList.contains("schedule__cell")) {
+        prev.setAttribute("tabindex", "-1");
+      }
+      if (target.classList.contains("schedule__cell")) {
+        target.setAttribute("tabindex", "0");
+      }
+      navState = { row: nr, col: nc };
+      target.focus();
+    });
+  }
+
+  function attachPopover(el, course) {
+    el.addEventListener("mouseenter", function () {
+      clearTimeout(popTimer);
+      popTimer = setTimeout(function () {
+        showPopover(el, course);
+      }, 300);
+    });
+    el.addEventListener("mouseleave", function () {
+      clearTimeout(popTimer);
+      if (popOpenFor !== "click") hidePopover();
+    });
+    el.addEventListener("focus", function () {
+      showPopover(el, course);
+    });
+    el.addEventListener("blur", function () {
+      hidePopover();
+    });
+    el.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (popOpenFor === "click" && popover.classList.contains("popover--visible")) {
+        hidePopover();
+        return;
+      }
+      showPopover(el, course);
+      popOpenFor = "click";
+    });
+  }
+
+  function showPopover(el, course) {
+    var rect = el.getBoundingClientRect();
+    var rows = [];
+    rows.push(
+      '<span class="popover__row">' +
+        ICON.hash +
+        "<span>کد درس: " +
+        (course.courseCode || "—") +
+        "</span></span>"
+    );
+    if (course.examDate) {
+      rows.push(
+        '<span class="popover__row">' +
+          ICON.calendar +
+          "<span>امتحان: " +
+          course.examDate +
+          "</span></span>"
+      );
+      rows.push(
+        '<span class="popover__row">' +
+          ICON.clock +
+          "<span>ساعت امتحان: " +
+          (course.examTime || "—") +
+          (course.examDuration ? " (" + course.examDuration + " ساعت)" : "") +
+          "</span></span>"
+      );
+    } else {
+      rows.push(
+        '<span class="popover__row">' +
+          ICON.calendar +
+          "<span>تاریخ امتحان ثبت نشده</span></span>"
+      );
+    }
+    popover.innerHTML = rows.join("");
+
+    var popW = 240;
+    var left = Math.max(8, Math.min(rect.left, window.innerWidth - popW - 8));
+    var top = rect.top - 8;
+
+    popover.style.left = left + "px";
+    popover.style.top = top + "px";
+    popover.style.transform = "translateY(calc(-100% - 6px))";
+    popover.classList.add("popover--visible");
+
+    requestAnimationFrame(function () {
+      var popRect = popover.getBoundingClientRect();
+      if (popRect.top < 8) {
+        popover.style.top = rect.bottom + 8 + "px";
+        popover.style.transform = "translateY(0)";
+      }
+      if (popRect.right > window.innerWidth - 8) {
+        popover.style.left = window.innerWidth - popW - 8 + "px";
+      }
+    });
+  }
+
+  function hidePopover() {
+    popover.classList.remove("popover--visible");
+    popOpenFor = null;
+  }
+
+  document.addEventListener("click", function (e) {
+    if (
+      popOpenFor === "click" &&
+      !e.target.closest(".course") &&
+      !e.target.closest(".popover")
+    ) {
+      hidePopover();
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") hidePopover();
+  });
+
+  function renderGlance() {
+    var todayIdx = todayIndex();
+    var tomorrowIdx = (todayIdx + 1) % DAYS.length;
+    document.getElementById("todayDayLabel").textContent = DAYS[todayIdx];
+    document.getElementById("tomorrowDayLabel").textContent = DAYS[tomorrowIdx];
+    fillGlanceList("todayList", DAYS[todayIdx]);
+    fillGlanceList("tomorrowList", DAYS[tomorrowIdx]);
+    var now = new Date();
+    var dateFmt = new Intl.DateTimeFormat("fa-IR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long"
+    });
+    document.getElementById("dateLine").textContent = dateFmt.format(now);
+  }
+
+  function fillGlanceList(elId, day) {
+    var byDay = buildBlocksByDay(courses)
+      [day]
+      .slice()
+      .sort(function (a, b) {
+        return a.start - b.start;
+      });
+    var ul = document.getElementById(elId);
+    ul.innerHTML = "";
+    if (!byDay.length) {
+      var li = document.createElement("li");
+      li.className = "glance-empty";
+      li.innerHTML = ICON.check + "<span>کلاسی برنامه‌ریزی نشده است</span>";
+      ul.appendChild(li);
+      return;
+    }
+    byDay.forEach(function (b) {
+      var hue = hueFor(b.course.courseCode);
+      var li = document.createElement("li");
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "glance-item";
+      btn.innerHTML =
+        '<span class="glance-item__dot" style="background:var(--hue-' +
+        hue +
+        '-line)"></span>' +
+        '<span class="glance-item__name">' +
+        b.course.courseName +
+        "</span>" +
+        '<span class="glance-item__time">' +
+        b.slot.start +
+        "–" +
+        b.slot.end +
+        "</span>";
+      btn.addEventListener("click", function () {
+        var target = document.getElementById(
+          "course-" + b.course.id + "-" + day + "-" + b.slot.start
+        );
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+        target.classList.add("course--pulse");
+        target.focus({ preventScroll: true });
+        setTimeout(function () {
+          target.classList.remove("course--pulse");
+        }, 2000);
+      });
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+  }
+
+  function renderLegend() {
+    var seen = {};
+    var legendGrid = document.getElementById("legendGrid");
+    legendGrid.innerHTML = "";
+    var fragment = document.createDocumentFragment();
+    courses.forEach(function (course) {
+      if (seen[course.courseCode]) return;
+      seen[course.courseCode] = true;
+      var hue = hueFor(course.courseCode);
+      var item = document.createElement("div");
+      item.className = "legend__item";
+      item.innerHTML =
+        '<span class="legend__swatch" style="--sw-fill:var(--hue-' +
+        hue +
+        "-fill);--sw-line:var(--hue-" +
+        hue +
+        '-line)"></span>' +
+        "<span><span class=\"legend__label\">" +
+        course.courseName +
+        '</span> — <span class="legend__prof">' +
+        course.professor +
+        "</span></span>";
+      fragment.appendChild(item);
+    });
+    legendGrid.appendChild(fragment);
+    document.getElementById("legendNoteIcon").innerHTML = ICON.calendar;
+  }
+
+  function renderAll() {
+    if (!courses.length) {
+      grid.innerHTML =
+        '<div class="empty-state">درسی با زمان مشخص برای نمایش وجود ندارد. از دکمه «وارد کردن» برای بارگذاری classes.json استفاده کنید.</div>';
+      document.getElementById("legendGrid").innerHTML = "";
+    } else {
+      renderGrid();
+      renderLegend();
+    }
+    renderGlance();
+    setupKeyboardNav();
+  }
+
+  function ensureExportRoot() {
+    if (exportRoot) return;
+    exportRoot = document.createElement("div");
+    exportRoot.id = "exportRoot";
+    exportRoot.setAttribute("aria-hidden", "true");
+    exportRoot.innerHTML =
+      '<div style="text-align:center;margin-bottom:22px;">' +
+      '<h1 style="font-family:var(--font-display);font-size:32px;line-height:1;margin:0 0 8px;color:var(--ink);">برنامه هفتگی</h1>' +
+      '<p id="exportDateLine" style="margin:0;font-size:12.5px;color:var(--ink-soft);font-weight:500;"></p>' +
+      "</div>" +
+      '<section class="schedule"><div class="schedule__scroll"><div class="schedule__grid" id="exportGrid"></div></div></section>' +
+      '<section class="legend" style="margin-top:18px;"><h3 class="legend__title">راهنما</h3><div class="legend__grid" id="exportLegendGrid"></div></section>';
+    document.body.appendChild(exportRoot);
+    exportGridEl = exportRoot.querySelector("#exportGrid");
+    exportLegendEl = exportRoot.querySelector("#exportLegendGrid");
+    exportDateEl = exportRoot.querySelector("#exportDateLine");
+  }
+
+  function buildExportGrid(list) {
+    exportGridEl.innerHTML = "";
+    var range = computeHourRange(list);
+    var totalHours = range.end - range.start;
+    var fragment = document.createDocumentFragment();
+
+    var corner = document.createElement("div");
+    corner.className = "schedule__corner";
+    fragment.appendChild(corner);
+
+    DAYS.forEach(function (day) {
+      var header = document.createElement("div");
+      header.className = "schedule__day-header";
+      header.innerHTML = '<span class="schedule__day-header__name">' + day + "</span>";
+      fragment.appendChild(header);
+    });
+
+    for (var row = 0; row < totalHours; row++) {
+      var hour = range.start + row;
+      var timeLabel = document.createElement("div");
+      timeLabel.className = "schedule__time";
+      timeLabel.style.gridRow = row + 2;
+      timeLabel.textContent = (hour < 10 ? "0" + hour : hour) + ":00";
+      fragment.appendChild(timeLabel);
+      DAYS.forEach(function (day, col) {
+        var cell = document.createElement("div");
+        cell.className = "schedule__cell";
+        cell.style.gridColumn = col + 2;
+        cell.style.gridRow = row + 2;
+        fragment.appendChild(cell);
+      });
+    }
+
+    var blocksByDay = buildBlocksByDay(list);
+    DAYS.forEach(function (day, col) {
+      var dayWrap = document.createElement("div");
+      dayWrap.className = "schedule__day";
+      dayWrap.style.gridColumn = col + 2;
+      dayWrap.style.gridRow = "2 / span " + totalHours;
+      dayWrap.style.height = totalHours * ROW_H + "px";
+
+      var blocks = assignLanes(blocksByDay[day]);
+      blocks.forEach(function (b) {
+        var hue = hueFor(b.course.courseCode);
+        var top = (b.start - range.start) * ROW_H;
+        var height = (b.end - b.start) * ROW_H - 5;
+        var widthPct = 100 / b.laneCount;
+        var startPct = b.lane * widthPct;
+        var shape = shapeIndex(b.course.courseCode, day + b.slot.start);
+
+        var el = document.createElement("div");
+        el.className = "course course--shape-" + shape;
+        el.style.setProperty("--fill", "var(--hue-" + hue + "-fill)");
+        el.style.setProperty("--line", "var(--hue-" + hue + "-line)");
+        el.style.top = top + "px";
+        el.style.height = Math.max(height, 44) + "px";
+        el.style.insetInlineStart = "calc(" + startPct + "% + 3px)";
+        el.style.width = "calc(" + widthPct + "% - 6px)";
+        el.innerHTML =
+          '<span class="course__name">' +
+          b.course.courseName +
+          "</span>" +
+          '<span class="course__meta">' +
+          ICON.user +
+          "<span>" +
+          b.course.professor +
+          "</span></span>" +
+          '<span class="course__meta">' +
+          ICON.clock +
+          "<span>" +
+          b.slot.start +
+          "–" +
+          b.slot.end +
+          "</span></span>" +
+          (b.course.examDate
+            ? '<span class="course__exam-flag" aria-hidden="true">' + ICON.calendar + "</span>"
+            : "");
+        dayWrap.appendChild(el);
+      });
+      fragment.appendChild(dayWrap);
+    });
+
+    exportGridEl.appendChild(fragment);
+  }
+
+  function buildExportLegend(list) {
+    exportLegendEl.innerHTML = "";
+    var seen = {};
+    var fragment = document.createDocumentFragment();
+    list.forEach(function (course) {
+      if (seen[course.courseCode]) return;
+      seen[course.courseCode] = true;
+      var hue = hueFor(course.courseCode);
+      var item = document.createElement("div");
+      item.className = "legend__item";
+      item.innerHTML =
+        '<span class="legend__swatch" style="--sw-fill:var(--hue-' +
+        hue +
+        "-fill);--sw-line:var(--hue-" +
+        hue +
+        '-line)"></span>' +
+        "<span><span class=\"legend__label\">" +
+        course.courseName +
+        '</span> — <span class="legend__prof">' +
+        course.professor +
+        "</span></span>";
+      fragment.appendChild(item);
+    });
+    exportLegendEl.appendChild(fragment);
+  }
+
+  function prepareExport() {
+    ensureExportRoot();
+    var dateFmt = new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+    exportDateEl.textContent =
+      "خروجی برنامه کلاسی — تهیه‌شده در " + dateFmt.format(new Date());
+    buildExportGrid(courses);
+    buildExportLegend(courses);
+  }
+
+  function setDownloadBusy(busy) {
+    var btn = document.getElementById("downloadBtn");
+    var iconSlot = document.getElementById("downloadIcon");
+    btn.disabled = busy;
+    btn.setAttribute("aria-busy", String(busy));
+    iconSlot.innerHTML = busy
+      ? '<span class="iconbtn__spinner"></span>'
+      : ICON.download;
+  }
+
+  function renderScheduleToCanvas() {
+    prepareExport();
+    return html2canvas(exportRoot, {
+      scale: 2,
+      backgroundColor: null,
+      useCORS: true,
+      logging: false
+    });
+  }
+
+  function downloadPng() {
+    if (!courses.length) {
+      showToast(ICON.warn, "درسی برای ساخت خروجی وجود ندارد.", "error");
+      return;
+    }
+    if (typeof html2canvas === "undefined") {
+      showToast(
+        ICON.warn,
+        "کتابخانه ساخت خروجی بارگذاری نشد؛ اتصال اینترنت را بررسی کنید.",
+        "error"
+      );
+      return;
+    }
+    setDownloadBusy(true);
+    renderScheduleToCanvas()
+      .then(function (canvas) {
+        var link = document.createElement("a");
+        link.download = "برنامه-هفتگی.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        showToast(ICON.check, "تصویر برنامه هفتگی دانلود شد.", "success");
+      })
+      .catch(function () {
+        showToast(ICON.warn, "ساخت تصویر با خطا مواجه شد.", "error");
+      })
+      .finally(function () {
+        setDownloadBusy(false);
+      });
+  }
+
+  function downloadPdf() {
+    if (!courses.length) {
+      showToast(ICON.warn, "درسی برای ساخت خروجی وجود ندارد.", "error");
+      return;
+    }
+    if (typeof html2canvas === "undefined" || !window.jspdf) {
+      showToast(
+        ICON.warn,
+        "کتابخانه ساخت خروجی بارگذاری نشد؛ اتصال اینترنت را بررسی کنید.",
+        "error"
+      );
+      return;
+    }
+    setDownloadBusy(true);
+    renderScheduleToCanvas()
+      .then(function (canvas) {
+        var jsPDF = window.jspdf.jsPDF;
+        var orientation = canvas.width >= canvas.height ? "l" : "p";
+        var pdf = new jsPDF({ orientation: orientation, unit: "mm", format: "a4" });
+        var pageW = pdf.internal.pageSize.getWidth();
+        var pageH = pdf.internal.pageSize.getHeight();
+        var margin = 10;
+        var maxW = pageW - margin * 2;
+        var maxH = pageH - margin * 2;
+        var ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
+        var imgW = canvas.width * ratio;
+        var imgH = canvas.height * ratio;
+        var x = (pageW - imgW) / 2;
+        var y = (pageH - imgH) / 2;
+        pdf.addImage(canvas.toDataURL("image/png"), "PNG", x, y, imgW, imgH);
+        pdf.save("برنامه-هفتگی.pdf");
+        showToast(ICON.check, "فایل PDF برنامه هفتگی دانلود شد.", "success");
+      })
+      .catch(function () {
+        showToast(ICON.warn, "ساخت PDF با خطا مواجه شد.", "error");
+      })
+      .finally(function () {
+        setDownloadBusy(false);
+      });
+  }
+
+  var downloadBtn = document.getElementById("downloadBtn");
+  var downloadMenu = document.getElementById("downloadMenu");
+  document.getElementById("downloadIcon").innerHTML = ICON.download;
+  document.getElementById("downloadPngBtn").innerHTML =
+    ICON.image + "<span>تصویر (PNG)</span>";
+  document.getElementById("downloadPdfBtn").innerHTML =
+    ICON.filePdf + "<span>فایل PDF (قابل چاپ)</span>";
+
+  function toggleDownloadMenu(force) {
+    var willOpen =
+      typeof force === "boolean" ? force : downloadMenu.hasAttribute("hidden");
+    if (willOpen) {
+      downloadMenu.removeAttribute("hidden");
+      requestAnimationFrame(function () {
+        downloadMenu.classList.add("download-menu--open");
+      });
+    } else {
+      downloadMenu.classList.remove("download-menu--open");
+      setTimeout(function () {
+        if (!downloadMenu.classList.contains("download-menu--open")) {
+          downloadMenu.setAttribute("hidden", "");
+        }
+      }, 150);
+    }
+    downloadBtn.setAttribute("aria-expanded", String(willOpen));
+  }
+
+  downloadBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    toggleDownloadMenu();
+  });
+  document.addEventListener("click", function (e) {
+    if (
+      !downloadMenu.hasAttribute("hidden") &&
+      !e.target.closest(".download-wrap")
+    ) {
+      toggleDownloadMenu(false);
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") toggleDownloadMenu(false);
+  });
+  document.getElementById("downloadPngBtn").addEventListener("click", function () {
+    toggleDownloadMenu(false);
+    downloadPng();
+  });
+  document.getElementById("downloadPdfBtn").addEventListener("click", function () {
+    toggleDownloadMenu(false);
+    downloadPdf();
+  });
+
+  function showToast(iconSvg, text, kind) {
+    var stack = document.getElementById("toastStack");
+    var toast = document.createElement("div");
+    toast.className = "toast" + (kind ? " toast--" + kind : "");
+    toast.innerHTML = iconSvg + "<span>" + text + "</span>";
+    stack.appendChild(toast);
+    setTimeout(function () {
+      toast.style.transition = "opacity .25s ease";
+      toast.style.opacity = "0";
+      setTimeout(function () {
+        toast.remove();
+      }, 260);
+    }, 3600);
+  }
+
+  function showNotice(iconSvg, text) {
+    document.getElementById("noticeIcon").innerHTML = iconSvg;
+    document.getElementById("noticeText").textContent = text;
+    document.getElementById("notice").hidden = false;
+  }
+
+  function hideNotice() {
+    document.getElementById("notice").hidden = true;
+  }
+
+  document.getElementById("noticeClose").innerHTML = ICON.x;
+  document.getElementById("noticeClose").addEventListener("click", hideNotice);
+
+  var importBtn = document.getElementById("importBtn");
+  importBtn.innerHTML = ICON.upload + "<span>وارد کردن</span>";
+  var importInput = document.getElementById("importInput");
+
+  importBtn.addEventListener("click", function () {
+    importInput.click();
+  });
+
+  importInput.addEventListener("change", function (e) {
+    var file = e.target.files[0];
+    if (!file) return;
+
+    if (
+      !isDemoData &&
+      courses.length &&
+      !confirm("داده فعلی با محتوای فایل جدید جایگزین می‌شود. ادامه می‌دهید؟")
+    ) {
+      importInput.value = "";
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      try {
+        var data = JSON.parse(ev.target.result);
+        var list = Array.isArray(data)
+          ? data
+          : Array.isArray(data.courses)
+          ? data.courses
+          : null;
+        if (!list) throw new Error("invalid-shape");
+        isDemoData = false;
+        applyCourseList(list, { persist: true });
+      } catch (err) {
+        showToast(
+          ICON.warn,
+          "فایل انتخاب‌شده یک JSON معتبر از نوع classes.json نیست.",
+          "error"
+        );
+      }
+      importInput.value = "";
+    };
+    reader.onerror = function () {
+      showToast(ICON.warn, "خواندن فایل با خطا مواجه شد.", "error");
+      importInput.value = "";
+    };
+    reader.readAsText(file);
+  });
+
+  function idbOpen() {
+    return new Promise(function (resolve) {
+      if (!IDB_SUPPORTED) return resolve(null);
+      var req = indexedDB.open("scheduleWidgetDB", 1);
+      req.onupgradeneeded = function () {
+        req.result.createObjectStore("handles");
+      };
+      req.onsuccess = function () {
+        resolve(req.result);
+      };
+      req.onerror = function () {
+        resolve(null);
+      };
+    });
+  }
+
+  function idbGet(key) {
+    return idbOpen().then(function (db) {
+      return new Promise(function (resolve) {
+        if (!db) return resolve(null);
+        try {
+          var tx = db.transaction("handles", "readonly");
+          var r = tx.objectStore("handles").get(key);
+          r.onsuccess = function () {
+            resolve(r.result || null);
+          };
+          r.onerror = function () {
+            resolve(null);
+          };
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    });
+  }
+
+  function idbSet(key, val) {
+    return idbOpen().then(function (db) {
+      return new Promise(function (resolve) {
+        if (!db) return resolve(false);
+        try {
+          var tx = db.transaction("handles", "readwrite");
+          tx.objectStore("handles").put(val, key);
+          tx.oncomplete = function () {
+            resolve(true);
+          };
+          tx.onerror = function () {
+            resolve(false);
+          };
+        } catch (e) {
+          resolve(false);
+        }
+      });
+    });
+  }
+
+  function themeMeta(id) {
+    for (var i = 0; i < THEMES.length; i++) {
+      if (THEMES[i].id === id) return THEMES[i];
+    }
+    return THEMES[0];
+  }
+
+  function applyTheme(theme) {
+    var meta = themeMeta(theme);
+    currentTheme = meta.id;
+    document.documentElement.setAttribute("data-theme", currentTheme);
+    var toggle = document.getElementById("themeToggle");
+    var isDark = currentTheme === "chalkboard" || currentTheme === "ink";
+    toggle.setAttribute("aria-pressed", String(isDark));
+    document.getElementById("themeIcon").innerHTML = ICON[meta.icon] || ICON.palette;
+    document.getElementById("themeLabel").textContent = meta.label;
+  }
+
+  function nextTheme() {
+    var idx = 0;
+    for (var i = 0; i < THEMES.length; i++) {
+      if (THEMES[i].id === currentTheme) {
+        idx = i;
+        break;
+      }
+    }
+    return THEMES[(idx + 1) % THEMES.length].id;
+  }
+
+  function persistTheme() {
+    try {
+      localStorage.setItem(STORAGE_THEME, currentTheme);
+    } catch (e) {}
+    if (settingsHandle) writeSettingsFile();
+  }
+
+  function writeSettingsFile() {
+    if (!settingsHandle) return Promise.resolve();
+    return settingsHandle
+      .createWritable()
+      .then(function (writable) {
+        return writable
+          .write(
+            JSON.stringify(
+              { theme: currentTheme, updatedAt: new Date().toISOString() },
+              null,
+              2
+            )
+          )
+          .then(function () {
+            return writable.close();
+          });
+      })
+      .catch(function () {});
+  }
+
+  function readSettingsFile() {
+    if (!settingsHandle) return Promise.resolve(null);
+    return settingsHandle
+      .getFile()
+      .then(function (file) {
+        return file.text();
+      })
+      .then(function (text) {
+        try {
+          var data = JSON.parse(text);
+          if (data && themeMeta(data.theme).id === data.theme) return data.theme;
+          return null;
+        } catch (e) {
+          return null;
+        }
+      })
+      .catch(function () {
+        return null;
+      });
+  }
+
+  function setFileStatus(state) {
+    var chip = document.getElementById("fileStatusChip");
+    var icon = document.getElementById("fileStatusIcon");
+    var text = document.getElementById("fileStatusText");
+    chip.dataset.state = state;
+    if (state === "linked") {
+      icon.innerHTML = ICON.link;
+      text.textContent = "همگام با setting.json";
+    } else if (state === "needs-permission") {
+      icon.innerHTML = ICON.warn;
+      text.textContent = "اجازه دسترسی لازم است";
+    } else if (state === "unsupported") {
+      icon.innerHTML = ICON.linkOff;
+      text.textContent = "ذخیره محلی (بدون فایل)";
+    } else {
+      icon.innerHTML = ICON.linkOff;
+      text.textContent = "اتصال به setting.json";
+    }
+  }
+
+  function initTheme() {
+    var saved = null;
+    try {
+      saved = localStorage.getItem(STORAGE_THEME);
+    } catch (e) {}
+    var prefersDark =
+      window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var initial = saved && themeMeta(saved).id === saved
+      ? saved
+      : prefersDark
+      ? "chalkboard"
+      : "paper";
+    applyTheme(initial);
+
+    if (!FS_SUPPORTED || !IDB_SUPPORTED) {
+      setFileStatus("unsupported");
+      return;
+    }
+
+    idbGet("settingsFile").then(function (handle) {
+      if (!handle) {
+        setFileStatus("not-linked");
+        return;
+      }
+      handle
+        .queryPermission({ mode: "readwrite" })
+        .then(function (perm) {
+          if (perm === "granted") {
+            settingsHandle = handle;
+            setFileStatus("linked");
+            readSettingsFile().then(function (theme) {
+              if (theme) applyTheme(theme);
+            });
+          } else {
+            settingsHandle = handle;
+            setFileStatus("needs-permission");
+          }
+        })
+        .catch(function () {
+          setFileStatus("not-linked");
+        });
+    });
+  }
+
+  document.getElementById("themeToggle").addEventListener("click", function () {
+    applyTheme(nextTheme());
+    persistTheme();
+  });
+
+  document.getElementById("fileStatusChip").addEventListener("click", function () {
+    var state = this.dataset.state;
+    if (state === "unsupported") {
+      showToast(
+        ICON.info,
+        "این مرورگر امکان ذخیره‌سازی مستقیم در فایل را ندارد؛ تنظیمات در حافظه محلی مرورگر ذخیره می‌شود."
+      );
+      return;
+    }
+    if (state === "needs-permission") {
+      idbGet("settingsFile").then(function (handle) {
+        if (!handle) return;
+        handle.requestPermission({ mode: "readwrite" }).then(function (perm) {
+          if (perm === "granted") {
+            settingsHandle = handle;
+            setFileStatus("linked");
+            readSettingsFile().then(function (theme) {
+              if (theme) applyTheme(theme);
+            });
+            showToast(ICON.check, "به setting.json متصل شد.", "success");
+          }
+        });
+      });
+      return;
+    }
+    if (state === "linked") {
+      showToast(ICON.info, "تنظیمات هم‌اکنون با setting.json همگام است.");
+      return;
+    }
+
+    window
+      .showSaveFilePicker({
+        suggestedName: "setting.json",
+        types: [
+          {
+            description: "JSON Settings",
+            accept: { "application/json": [".json"] }
+          }
+        ]
+      })
+      .then(function (handle) {
+        settingsHandle = handle;
+        return idbSet("settingsFile", handle).then(function () {
+          return writeSettingsFile();
+        });
+      })
+      .then(function () {
+        setFileStatus("linked");
+        showToast(ICON.check, "فایل setting.json ایجاد و متصل شد.", "success");
+      })
+      .catch(function (err) {
+        if (err && err.name !== "AbortError") {
+          showToast(ICON.warn, "اتصال به فایل انجام نشد.", "error");
+        }
+      });
+  });
+
+  initTheme();
+  applyCourseList(loadInitialData(), { persist: false });
+})();
+</script>
+</body>
+</html>
